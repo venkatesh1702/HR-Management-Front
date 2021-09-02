@@ -1,0 +1,41 @@
+.input_label {
+    color: #666;
+    font-size: 16px;
+    font-weight: 500;
+}
+.input_label_div::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    background: #f27b77;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    margin-left: 15px;
+}
+.input_label_div {
+    border-bottom: 1px solid #dad1d1;
+    margin-top: 10px;
+}
+.input_text {
+    border: none;
+    border-radius: 0px;
+}
+
+.input_text:focus {
+    border-color: #fff !important;
+    border-bottom: 1px solid blue !important;
+    box-shadow: none !important;
+}
+.input_text:hover {
+    border-color: #fff !important;
+    border-bottom: 1px solid blue !important;
+    box-shadow: none !important;
+}
+.errorMsg {
+    color: red;
+    font-size: 13px;
+}
+.form-group {
+    margin-bottom: 0.4rem !important;
+}

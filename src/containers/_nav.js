@@ -41,7 +41,7 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Breadcrumb',
-        to: '/base/breadcrumbs',
+        to: '/base/breadcrumbs', 
       },
       {
         _tag: 'CSidebarNavItem',
@@ -119,6 +119,19 @@ const _nav =  [
         to: '/base/tooltips',
       },
     ],
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Organization',
+    route: '/organization/employee/add',
+    icon: 'cil-puzzle',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Employee',
+        to: '/organization/employee/add', 
+      },
+    ]
   },
   {
     _tag: 'CSidebarNavDropdown',
