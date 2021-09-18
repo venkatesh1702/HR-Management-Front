@@ -3,7 +3,7 @@ import Axios from "axios";
 import jwt from "jsonwebtoken";
 import { CRow, CCol, CCard, CCardBody, CForm, CFormGroup, CLabel, CInput, CButton, CToast, CToaster, CToastHeader, CToastBody } from '@coreui/react';
 import "../../../../views/styles.css";
-import emailjs from 'emailjs-com';
+// import emailjs from 'emailjs-com';
 
 let obj = {};
 const EmployeeAdd = () => {
@@ -23,7 +23,9 @@ const EmployeeAdd = () => {
         "fade": false,
         "autohide": "3000"
     })
+
     const [errors,setErrors]= useState({})
+    
     const [errorMsg, setErrorMsg] = useState({
         "employeeIDError": false,
         "firstNameError": false,

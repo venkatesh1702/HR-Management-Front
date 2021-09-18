@@ -38,6 +38,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 const LeaveType = React.lazy(() => import('./views/leave/leaveType'))
+const LeaveList = React.lazy(()=>import('./views/leave/leaveList'))
 
 const EmployeeAdd = React.lazy(() => import('./views/sidess/organization/employee/employeeAdd'));
 
@@ -88,7 +89,8 @@ const routes = [
   { path: '/organization/employee/add', name: 'EmployeeAdd', component: EmployeeAdd },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/leave', exact: true, name: 'Leave Type', component: LeaveType }
+  { path: '/leave', exact: true, name: 'Leave Type', component: LeaveType },
+  { path: '/leavelist', exact: true, name: 'Leave Type', component: LeaveList }
 ];
 
 export default routes;
