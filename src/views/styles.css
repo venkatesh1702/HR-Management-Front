@@ -15,7 +15,7 @@
 }
 .input_label_div {
     border-bottom: 1px solid #dad1d1;
-    margin-top: 10px;
+    margin-top: 1.6rem;
 }
 .input_text {
     border: none;
@@ -37,5 +37,42 @@
     font-size: 13px;
 }
 .form-group {
-    margin-bottom: 0.4rem !important;
+    margin-bottom: 0rem !important;
+}
+.input_modal {
+    border: none !important;
+    border-bottom: 1px solid #000 !important;
+    border-radius: 0px !important;
+}
+.input_modal:focus {
+    border: none !important;
+    border-bottom: 1px solid #000 !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+}
+.add_modal {
+    border: none !important;
+}
+.toaster .toast {
+    margin-top: 6.125rem !important;
+}
+.toast-header {
+    height: 2.7rem !important;
+}
+.input_text_normal  {
+    border: none !important;
+    border-bottom: 1px solid #dad1d1 !important;
+    box-shadow: none !important;
+    border-radius: 0px !important;
+}
+.cursor {
+    cursor: pointer !important;
+}
+.css-yk16xz-control  {
+    border: none !important;
+    margin-top: -4px !important;
+}
+.userTableTh {
+    border: none !important;
+    background-color: #F9FAFC !important;
 }
