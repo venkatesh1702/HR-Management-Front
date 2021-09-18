@@ -138,16 +138,8 @@ const EmployeeAdd = (props) => {
         "fade": false,
         "autohide": "5000"
     })
-
-    const [errors,setErrors]= useState({})
     
-    const [errorMsg, setErrorMsg] = useState({
-        "employeeIDError": false,
-        "firstNameError": false,
-        "lastNameError": false,
-        "emailIdError": false,
-        "userIdError": false
-    })
+
     const [modalOpenClose, setModalOpenClose] = useState(false)
     const [fieldName,setFieldName] = useState("");
     const [fields,setFields] = useState("");
