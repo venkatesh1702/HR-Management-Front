@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import { CButton, CCard, CCardBody, CCol, CRow } from '@coreui/react';
-
 const LeaveList = () => {
 
     const [leaveListData, setLeaveListData] = useState([])
@@ -20,13 +20,17 @@ const LeaveList = () => {
             });
     }, []);
 
+    const history = useHistory();
+
+    const applyLeave = () =>{
+        history.push('/leaveapply');
+    }
 
     return (
         <div>
             <CRow>
                 <CCol>
-                    <CButton color="info" className="float-right">Apply Leave</CButton>
-
+                    <CButton color="info" className="float-right" onClick={applyLeave}>Apply Leave</CButton>
                 </CCol>
             </CRow>
 
