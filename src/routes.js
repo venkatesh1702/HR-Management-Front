@@ -1,5 +1,4 @@
 import React from 'react';
-
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 
@@ -41,6 +40,7 @@ const LeaveType = React.lazy(() => import('./views/leave/leaveType'))
 const LeaveList = React.lazy(()=>import('./views/leave/leaveList'))
 
 const EmployeeAdd = React.lazy(() => import('./views/sidess/organization/employee/employeeAdd'));
+const EmployeeList = React.lazy(() => import('./views/sidess/organization/employee/employeeLlist'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -87,6 +87,7 @@ const routes = [
 
 
   { path: '/organization/employee/add', name: 'EmployeeAdd', component: EmployeeAdd },
+  { path: '/organization/employee/list', name: 'EmployeeAdd', component: EmployeeList },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/leave', exact: true, name: 'Leave Type', component: LeaveType },

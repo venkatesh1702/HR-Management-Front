@@ -129,7 +129,7 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Employee',
-        to: '/organization/employee/add', 
+        to: '/organization/employee/list', 
       },
     ]
   },

@@ -3,21 +3,77 @@ import Axios from "axios";
 import "../employee/employeeAdd.js"
 
 
-// export function Common() {
-//     Axios.get('http://localhost:4000/api/user/list')
-//         .then(res => {
-//             console.log(res,"res");
-//             return res;
-//         })
-// }
-
-
 export async function users() {
     try {
         const res = await Axios.get('http://localhost:4000/api/user/list')
         return res;
     } catch (error) {
         console.log(error.message)
+    }
+}
+
+export async function departments() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/department/list')
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export async function locations() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/location/list')
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export async function designations() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/designation/list')
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export async function employmentTypes() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/employmentType/list')
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export async function sourceOfHires() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/sourceofhire/list')
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export async function usersLlist() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/user/list')
+        return res.data.data;
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+export async function deleteUser(selectedUserId) {
+    console.log(selectedUserId,"hello");
+    try {
+        const res = await Axios.delete('http://localhost:4000/api/user/delete?userId=' + selectedUserId)
+        return res;
+    } catch (error) {
+        console.log(error.message);
     }
 }
 

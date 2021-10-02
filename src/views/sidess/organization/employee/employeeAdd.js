@@ -8,7 +8,7 @@ import "../../../../views/styles.css";
 // import emailjs from 'emailjs-com';
 import emailjs from 'emailjs-com';
 import Select from "react-select";
-import {users} from  "../Services/employeeAdd.services.js";
+import {users,departments,locations,designations,sourceOfHires,employmentTypes} from  "../Services/employeeAdd.services.js";
 
 
 let obj = {};
@@ -23,9 +23,68 @@ const EmployeeAdd = (props) => {
         queryUserId = querySplit[1];
         editUser(queryUserId);
         users().then(res => {
-            console.log(res);
+            var datas = [];
+            {res.data.data.map(data => {
+                datas.push({
+                    "label": data.firstName + '-' + data.employeeID,
+                    "value": data.firstName
+                })
+            })}
+            setReportingManagerList(datas);
         })
-        
+        departments().then(res =>  {
+            var datas = [];
+            {res.data.data.map(data => {
+                datas.push({
+                    "label": data.name,
+                    "value": data.name
+                })
+            })}
+            setDepartmentList(datas);
+        })
+        locations().then(res =>  {
+            var datas = [];
+            {res.data.data.map(data => {
+                datas.push({
+                    "label": data.name,
+                    "value": data.name
+                })
+            })}
+            setLocationList(datas);
+        })
+
+        designations().then(res =>  {
+            var datas = [];
+            {res.data.data.map(data => {
+                datas.push({
+                    "label": data.name,
+                    "value": data.name
+                })
+            })}
+            setDesignationList(datas);
+        })
+
+        sourceOfHires().then(res =>  {
+            var datas = [];
+            {res.data.data.map(data => {
+                datas.push({
+                    "label": data.name,
+                    "value": data.name
+                })
+            })}
+            setSourceofhireList(datas);
+        })
+
+        employmentTypes().then(res =>  {
+            var datas = [];
+            {res.data.data.map(data => {
+                datas.push({
+                    "label": data.name,
+                    "value": data.name
+                })
+            })}
+            setEmploymentTypeList(datas);
+        })        
     },[]);
 
     const editUser = (queryUserId) => {
@@ -228,7 +287,7 @@ const EmployeeAdd = (props) => {
             Axios.post('http://localhost:4000/api/user/add', employeeDetails)
                 .then(res => {
                     if (res.data) {
-                        setResMsg(res.Msg);
+                        setResMsg(res.data.msg);
                         setToaster({ show: true, fade: true, autohide: "5000" })
                         var payload = { userId: res.data.data._id };
                         var secret = 'fe1a1915a379f3be5394b64d14794932';
@@ -244,13 +303,14 @@ const EmployeeAdd = (props) => {
                         // });   
                         // event.target.reset()
                         clearForm()
+                        // window.location.href = "/#/organization/employee/list";
                     }
                 })
         } else {
             Axios.put('http://localhost:4000/api/user/update?userId=' + `${queryUserId}`, employeeDetails)
             .then(res => {
                 if (res.data) {
-                    setResMsg(res.Msg);
+                    setResMsg(res.data.msg);
                     setToaster({ show: true, fade: true, autohide: "5000" })
                     var payload = { userId: res.data.data._id };
                     var secret = 'fe1a1915a379f3be5394b64d14794932';
@@ -266,6 +326,7 @@ const EmployeeAdd = (props) => {
                     // });   
                     // event.target.reset()
                     clearForm()
+                    // window.location.href = "/#/organization/employee/list";
                 }
             })
         }
@@ -280,8 +341,55 @@ const EmployeeAdd = (props) => {
             "firstName": "",
             "lastName": "",
             "nickName": "",
-            "emailId": ""
+            "emailId": "",
+            "userId": "",
+            "department" : "",
+            "location": "",
+            "designation" : "",
+            "sourceofhire" : "",
+            "employmentType" : "",
+            "employeeStatus" : "",
+            "reportingManager" : "",
+            "joinDate" : "",
+            "seatingLocation" : "",
+            "phoneNumber" : "",
+            "currentExp" : "",
+            "personalMobileNumber" : "",
+            "address" : "",
+            "aadhaarNumber" : "",
+            "panNumber" : "",
+            "personalEmailID" : "",
+            "dob" : "",
+            "age" : "",
+            "jobDescription" : "",
+            "aboutMe" : "",
+            "askMeAboutExpertise" : "",
+            "exitDate" : "",
+            "gender" : "",
+            "maritalStatus": ""
         })
+        setWorkExperience([{
+            "prevCompanyName": "",
+            "jobTitle": "",
+            "fromDate": "",
+            "toDate": "",
+            "jobDescription": ""
+        }])
+    
+        setEducationalDetails([{
+            "instituteName": "",
+            "degree": "",
+            "specialization": "",
+            "completionDate": "",
+            "additionalNotes": "",
+            "interests": ""
+        }])
+    
+        setDependentDetails([{
+            "name": "",
+            "relationship": "",
+            "birthDate": ""
+        }])
     }
 
     const validations = (event) => {
@@ -339,53 +447,7 @@ const EmployeeAdd = (props) => {
             setFields(""); 
         })
     }  
-    
-    const listFields = (name) => {
-        let fieldName = name.toLowerCase();
-        Axios.get('http://localhost:4000/api/'+ fieldName +'/list')
-        .then(res => {
-            let resData = res.data.data;
-            var datas = []
-            if(fieldName == "user") {
-                {resData.map(data => {
-                    datas.push({
-                        "label": data.firstName + '-' + data.employeeID,
-                        "value": data.firstName
-                    })
-                })}
-            } else {
-                {resData.map(data => {
-                    datas.push({
-                        "label": data.name,
-                        "value": data.name
-                    })
-                })}
-            }
-            if(name == "department") {
-                setDepartmentList(datas);
-            } 
-            if(name == "location") {
-                setLocationList(datas);
-            }
-            if(name == "designation") {
-                setDesignationList(datas);
-            }
-            if(name == "sourceOfHire") {
-                setSourceofhireList(datas);
-                console.log(sourceofhireList);
-            }
-            if(name == "employmentType") {
-                setEmploymentTypeList(datas);
-            }
-            if(name == "user") {
-                setReportingManagerList(datas);
-            } 
-            if(name == "employeeStatus") {
-                setEmpStatus(datas);
-            }
-        })
-    } 
-    
+        
     const addWorkExpRow = (e) => {
         var values = [...workExperience];
         values.push({
@@ -470,7 +532,6 @@ const EmployeeAdd = (props) => {
     }
     
 
-
     return (
         <>
             <CRow>
@@ -507,7 +568,7 @@ const EmployeeAdd = (props) => {
                                 </CModalFooter>
                             </CModal>
                             
-                            <CForm id="myForm" onSubmit={(e) => { saveUser(e) }} className="form-horizontal" autoComplete="off">
+                            <CForm id="userForm" onSubmit={(e) => { saveUser(e) }} className="form-horizontal" autoComplete="off">
                                 <b><h4>Basic Information</h4></b>
                                 <CFormGroup row>
                                     <CCol md="6">
@@ -631,7 +692,7 @@ const EmployeeAdd = (props) => {
                                                             <CLabel className="input_label">Department</CLabel>
                                                         </CCol>
                                                         <CCol xs="12" md="7" className="pr-0">
-                                                            <Select options={departmentList} name="department" id="department" onChange={(e) => {selectChange(e,"department")}} value={departmentList.filter(function(option) {return option.value === empData.department; })} onFocus={(e) => {listFields("department")}} />
+                                                            <Select options={departmentList} name="department" id="department" onChange={(e) => {selectChange(e,"department")}} value={departmentList.filter(function(option) {return option.value === empData.department; })} />
                                                         </CCol>
                                                         <CCol xs="12" md="1" className="pl-1">
                                                             <a onClick={(e) => {add_field_modal(e,'Department')}}><i className="fas fa-plus"></i></a>
@@ -650,7 +711,7 @@ const EmployeeAdd = (props) => {
                                                             <CLabel className="input_label">Location</CLabel>
                                                         </CCol>
                                                         <CCol xs="12" md="7" className="pr-0">
-                                                            <Select options={locationList} name="location" id="location" onChange={(e) => {selectChange(e,"location")}} value={locationList.filter(function(option) {return option.value === empData.location; })} onFocus={(e) => {listFields("location")}} />
+                                                            <Select options={locationList} name="location" id="location" onChange={(e) => {selectChange(e,"location")}} value={locationList.filter(function(option) {return option.value === empData.location; })} />
                                                         </CCol>
                                                         <CCol xs="12" md="1" className="pl-1">
                                                             <a onClick={(e) => {add_field_modal(e,'Location')}}><i className="fas fa-plus"></i></a>
@@ -669,7 +730,7 @@ const EmployeeAdd = (props) => {
                                                             <CLabel className="input_label">Designation</CLabel>
                                                         </CCol>
                                                         <CCol xs="12" md="7" className="pr-0">
-                                                            <Select options={designationList} name="designation" id="designation" onChange={(e) => {selectChange(e,"designation")}} value={designationList.filter(function(option) {return option.value === empData.designation; })} onFocus={(e) => {listFields("designation")}} />
+                                                            <Select options={designationList} name="designation" id="designation" onChange={(e) => {selectChange(e,"designation")}} value={designationList.filter(function(option) {return option.value === empData.designation; })} />
                                                         </CCol>
                                                         <CCol xs="12" md="1" className="pl-1">
                                                             <a onClick={(e) => {add_field_modal(e,'Designation')}}><i className="fas fa-plus"></i></a>
@@ -688,7 +749,7 @@ const EmployeeAdd = (props) => {
                                                             <CLabel className="input_label">Source of Hire</CLabel>
                                                         </CCol>
                                                         <CCol xs="12" md="7" className="pr-0">
-                                                            <Select options={sourceofhireList} name="sourceofhire" id="sourceofhire" onChange={(e) => {selectChange(e,"sourceofhire")}} value={sourceofhireList.filter(function(option) {return option.value === empData.sourceofhire; })} onFocus={(e) => {listFields("sourceOfHire")}} />
+                                                            <Select options={sourceofhireList} name="sourceofhire" id="sourceofhire" onChange={(e) => {selectChange(e,"sourceofhire")}} value={sourceofhireList.filter(function(option) {return option.value === empData.sourceofhire; })} />
                                                         </CCol>
                                                         <CCol xs="12" md="1" className="pl-1">
                                                             <a onClick={(e) => {add_field_modal(e,'Source of Hire')}}><i className="fas fa-plus"></i></a>
@@ -707,7 +768,7 @@ const EmployeeAdd = (props) => {
                                                             <CLabel className="input_label">Employment Type</CLabel>
                                                         </CCol>
                                                         <CCol xs="12" md="7" className="pr-0">
-                                                            <Select options={employmentTypeList} name="employmentType" id="employmentType" onChange={(e) => {selectChange(e,"employmentType")}} value={employmentTypeList.filter(function(option) {return option.value === empData.employmentType; })} onFocus={(e) => {listFields("employmentType")}} />
+                                                            <Select options={employmentTypeList} name="employmentType" id="employmentType" onChange={(e) => {selectChange(e,"employmentType")}} value={employmentTypeList.filter(function(option) {return option.value === empData.employmentType; })} />
                                                         </CCol>
                                                         <CCol xs="12" md="1" className="pl-1">
                                                             <a onClick={(e) => {add_field_modal(e,'Employment Type')}}><i className="fas fa-plus"></i></a>
@@ -742,7 +803,7 @@ const EmployeeAdd = (props) => {
                                                             <CLabel className="input_label text-nowrap">Reporting Manager</CLabel>
                                                         </CCol>
                                                         <CCol xs="12" md="7" className="pr-0">
-                                                            <Select options={reportingManagerList} name="reportingManager" id="reportingManager" onChange={(e) => {selectChange(e,"reportingManager")}} value={reportingManagerList.filter(function(option) {return option.value === empData.reportingManager; })} onFocus={(e) => {listFields("user")}} />
+                                                            <Select options={reportingManagerList} name="reportingManager" id="reportingManager" onChange={(e) => {selectChange(e,"reportingManager")}} value={reportingManagerList.filter(function(option) {return option.value === empData.reportingManager; })}  />
                                                         </CCol>
                                                     </CRow>
                                                 </div>

@@ -76,3 +76,20 @@
     border: none !important;
     background-color: #F9FAFC !important;
 }
+.table-responsive {
+    overflow-Y : hidden !important;
+}
+.userListTable th {
+    white-space: nowrap;
+}
+.userListTable td {
+    white-space: nowrap;
+}
+.editDropdown {
+    position:absolute !important;
+    top:48px !important;
+    left: 0px !important;
+}
+.justify-center {
+    justify-content: center;
+}
