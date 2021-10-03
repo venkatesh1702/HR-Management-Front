@@ -1,4 +1,4 @@
-import {React} from "react";
+import { React } from "react";
 import Axios from "axios";
 import "../employee/employeeAdd.js"
 
@@ -68,7 +68,7 @@ export async function usersLlist() {
 
 
 export async function deleteUser(selectedUserId) {
-    console.log(selectedUserId,"hello");
+    console.log(selectedUserId, "hello");
     try {
         const res = await Axios.delete('http://localhost:4000/api/user/delete?userId=' + selectedUserId)
         return res;
@@ -76,6 +76,7 @@ export async function deleteUser(selectedUserId) {
         console.log(error.message);
     }
 }
+
 
 
 

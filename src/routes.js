@@ -36,9 +36,9 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
-const LeaveType = React.lazy(() => import('./views/sidess/organization/leave/leaveType'))
-const LeaveList = React.lazy(()=>import('./views/sidess/organization/leave/leaveList'))
-const LeaveApply = React.lazy(()=>import('./views/sidess/organization/leave/leaveApply'))
+const LeaveType = React.lazy(() => import('./views/sidess/leave/leaveType'))
+const LeaveList = React.lazy(()=>import('./views/sidess/leave/leaveList'))
+const LeaveApply = React.lazy(()=>import('./views/sidess/leave/leaveApply'))
 
 const EmployeeAdd = React.lazy(() => import('./views/sidess/organization/employee/employeeAdd'));
 const EmployeeList = React.lazy(() => import('./views/sidess/organization/employee/employeeLlist'));
@@ -91,9 +91,9 @@ const routes = [
   { path: '/organization/employee/list', name: 'EmployeeAdd', component: EmployeeList },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/leave', exact: true, name: 'Leave Type', component: LeaveType },
-  { path: '/leavelist', exact: true, name: 'Leave List', component: LeaveList },
-  { path: '/leaveapply', exact: true, name: 'Leave Apply', component: LeaveApply }
+  { path: '/organization/leavetype', exact: true, name: 'Leave Type', component: LeaveType },
+  { path: '/organization/leavelist', exact: true, name: 'Leave List', component: LeaveList },
+  { path: '/organization/leaveapply', exact: true, name: 'Leave Apply', component: LeaveApply }
 ];
 
 export default routes;

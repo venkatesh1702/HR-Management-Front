@@ -1,12 +1,12 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 
-const _nav =  [
+const _nav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',
     to: '/dashboard',
-    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
     badge: {
       color: 'info',
       text: 'NEW',
@@ -41,7 +41,7 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Breadcrumb',
-        to: '/base/breadcrumbs', 
+        to: '/base/breadcrumbs',
       },
       {
         _tag: 'CSidebarNavItem',
@@ -129,7 +129,25 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Employee',
-        to: '/organization/employee/list', 
+        to: '/organization/employee/list',
+      },
+    ]
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Leave',
+    route: '/organization/employee/add',
+    icon: 'cil-puzzle',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Leave Type',
+        to: '/organization/leavetype',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Leave List',
+        to: '/organization/leavelist',
       },
     ]
   },
