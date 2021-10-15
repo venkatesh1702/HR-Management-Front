@@ -8,6 +8,7 @@ import {Table} from "reactstrap";
 import {usersLlist, deleteUser} from "../Services/employeeAdd.services.js";
 
 
+
 var selectedUserId;
 const EmployeeList = () => {
 
@@ -26,10 +27,6 @@ const EmployeeList = () => {
         "fade": false,
         "autohide": "5000"
     })
-
-    const inviteUser = () => {
-        window.location.href = "/organization/employee/add"
-    }
 
     const openDeleteModal = (userId) => {
         selectedUserId = userId;
@@ -63,7 +60,7 @@ const EmployeeList = () => {
 
                 </CCol>
                 <CCol md={2}>
-                    <a href="/#/organization/employee/add" ><CButton block color="info"><i className="fas fa-plus"></i>&nbsp;Invite User</CButton></a>
+                    <a className="inviteUser" href="/#/organization/employee/add"><CButton block color="info"><i className="fas fa-plus"></i>&nbsp;Invite User</CButton></a><br/>
                 </CCol>
             </CRow>
             <CToaster position={toaster.position}>

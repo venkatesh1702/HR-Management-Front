@@ -66,9 +66,25 @@ export async function usersLlist() {
     }
 }
 
+export async function clients() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/client/list')
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+export async function projects() {
+    try {
+        const res = await Axios.get('http://localhost:4000/api/project/list')
+        return res;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 export async function deleteUser(selectedUserId) {
-    console.log(selectedUserId,"hello");
     try {
         const res = await Axios.delete('http://localhost:4000/api/user/delete?userId=' + selectedUserId)
         return res;

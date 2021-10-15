@@ -91,7 +91,6 @@ const EmployeeAdd = (props) => {
         if(queryUserId) {
             Axios.get('http://localhost:4000/api/user/edit?userId=' + `${queryUserId}`)
             .then((res) => {
-                console.log(res.data.data)
                 setEmpData({
                     "employeeID": res.data.data.employeeID,
                     "firstName": res.data.data.firstName,
@@ -234,13 +233,11 @@ const EmployeeAdd = (props) => {
     ])
 
     const inputChange = (e) => {
-        console.log(e.target.value);
         setEmpData({ ...empData, [e.target.name]: e.target.value });
     }
 
     const selectChange = (e,name) => {
         setEmpData({ ...empData, [name]: e.value });
-        console.log(empData);
     }
 
     const add_fields_inputChange = (e) => {
@@ -445,6 +442,69 @@ const EmployeeAdd = (props) => {
             setToaster({ show: true, fade: true})
             setFieldName("");
             setFields(""); 
+            if(fieldName == "department") {
+                departments().then(res =>  {
+                    var datas = [];
+                    {res.data.data.map(data => {
+                        datas.push({
+                            "label": data.name,
+                            "value": data.name
+                        })
+                    })}
+                    setDepartmentList(datas);
+                })
+            }
+
+            if(fieldName == "location") {
+                locations().then(res =>  {
+                    var datas = [];
+                    {res.data.data.map(data => {
+                        datas.push({
+                            "label": data.name,
+                            "value": data.name
+                        })
+                    })}
+                    setLocationList(datas);
+                })
+            }
+            if(fieldName == "designation") {
+                designations().then(res =>  {
+                    var datas = [];
+                    {res.data.data.map(data => {
+                        datas.push({
+                            "label": data.name,
+                            "value": data.name
+                        })
+                    })}
+                    setDesignationList(datas);
+                })
+            }
+            
+            if(fieldName == "sourceofhire") {
+                sourceOfHires().then(res =>  {
+                    var datas = [];
+                    {res.data.data.map(data => {
+                        datas.push({
+                            "label": data.name,
+                            "value": data.name
+                        })
+                    })}
+                    setSourceofhireList(datas);
+                })
+            }
+
+            if(fieldName == "employmenttype") {
+                employmentTypes().then(res =>  {
+                    var datas = [];
+                    {res.data.data.map(data => {
+                        datas.push({
+                            "label": data.name,
+                            "value": data.name
+                        })
+                    })}
+                    setEmploymentTypeList(datas);
+                })  
+            }
         })
     }  
         
@@ -541,7 +601,7 @@ const EmployeeAdd = (props) => {
                             <CToaster position={toaster.position}>
                                 <CToast show={toaster.show} autohide={toaster.autohide} fade={toaster.fade}>
                                     <CToastHeader closeButton="true">{resMsg}</CToastHeader>
-                                    {/* <CToastBody></CToastBody> */}
+                                    
                                 </CToast>
                             </CToaster>
                             <CModal 
@@ -574,7 +634,7 @@ const EmployeeAdd = (props) => {
                                     <CCol md="6">
                                         <CFormGroup className={errors.employeeIDError?.length > 0 ? "mb-0" : " "} row>
                                             <CCol md="12">
-                                                <div className="input_label_div">
+                                                <div className="input_label_div_req">
                                                     <CRow>
                                                         <CCol md="3">
                                                             <CLabel className="input_label">EmployeeID</CLabel>
@@ -596,7 +656,7 @@ const EmployeeAdd = (props) => {
                                     <CCol md="6">
                                         <CFormGroup className={errors.firstNameError?.length > 0 ? "mb-0" : ""} row>
                                             <CCol md="12">
-                                                <div className="input_label_div">
+                                                <div className="input_label_div_req">
                                                     <CRow>
                                                         <CCol md="3">
                                                             <CLabel className="input_label">First Name</CLabel>
@@ -620,7 +680,7 @@ const EmployeeAdd = (props) => {
                                     <CCol md="6">
                                         <CFormGroup className={errors.lastNameError?.length > 0 ? "mb-0" : ""} row>
                                             <CCol md="12">
-                                                <div className="input_label_div">
+                                                <div className="input_label_div_req">
                                                     <CRow>
                                                         <CCol md="3">
                                                             <CLabel className="input_label">Last Name</CLabel>
@@ -642,7 +702,7 @@ const EmployeeAdd = (props) => {
                                     <CCol md="6">
                                         <CFormGroup className={errors.emailIdError?.length > 0 ? "mb-0" : ""} row>
                                             <CCol md="12">
-                                                <div className="input_label_div">
+                                                <div className="input_label_div_req">
                                                     <CRow>
                                                         <CCol md="3">
                                                             <CLabel className="input_label">Email ID</CLabel>

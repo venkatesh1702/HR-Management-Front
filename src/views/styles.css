@@ -1,13 +1,26 @@
 .input_label {
     color: #666;
     font-size: 16px;
-    font-weight: 500;
+    font-weight:500;
+}
+.input_label_div_req::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    background: #f27b77;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    margin-left: 15px;
+}
+.input_label_div_req {
+    border-bottom: 1px solid #dad1d1;
+    margin-top: 1.6rem;
 }
 .input_label_div::after {
     content: '';
     position: absolute;
     width: 20px;
-    background: #f27b77;
     height: 2px;
     bottom: 0;
     left: 0;
@@ -92,4 +105,11 @@
 }
 .justify-center {
     justify-content: center;
+}
+a:hover {
+    text-decoration: none !important;
+}
+.cancelBtn {
+    color: #fff;
+    text-decoration: none;
 }

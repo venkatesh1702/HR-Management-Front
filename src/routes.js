@@ -1,4 +1,5 @@
 import React from 'react';
+
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 
@@ -36,12 +37,19 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
-const LeaveType = React.lazy(() => import('./views/sidess/organization/leave/leaveType'))
-const LeaveList = React.lazy(()=>import('./views/sidess/organization/leave/leaveList'))
-const LeaveApply = React.lazy(()=>import('./views/sidess/organization/leave/leaveApply'))
+const LeaveType = React.lazy(() => import('./views/sidess/leave/leaveType'))
+const LeaveList = React.lazy(()=>import('./views/sidess/leave/leaveList'))
+const LeaveApply = React.lazy(()=>import('./views/sidess/leave/leaveApply'))
 
 const EmployeeAdd = React.lazy(() => import('./views/sidess/organization/employee/employeeAdd'));
 const EmployeeList = React.lazy(() => import('./views/sidess/organization/employee/employeeLlist'));
+const ClientsAdd = React.lazy( () => import('./views/sidess/timetracker/projects_jobs/clientsAdd'));
+const ClientsList = React.lazy( () => import('./views/sidess/timetracker/projects_jobs/clientsList'));
+const ProjectsAdd = React.lazy( () => import('./views/sidess/timetracker/projects_jobs/projectsAdd'));
+const ProjectsList = React.lazy( () => import('./views/sidess/timetracker/projects_jobs/projectsList'));
+const JobsAdd = React.lazy( () => import('./views/sidess/timetracker/projects_jobs/jobsAdd'));
+const JobsList = React.lazy( () => import('./views/sidess/timetracker/projects_jobs/jobsList'));
+
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -89,6 +97,16 @@ const routes = [
 
   { path: '/organization/employee/add', name: 'EmployeeAdd', component: EmployeeAdd },
   { path: '/organization/employee/list', name: 'EmployeeAdd', component: EmployeeList },
+  { path: '/timetracker/clients/add', name: 'ClientsAdd', component: ClientsAdd},
+  { path: '/timetracker/clients/list', name: 'ClientsList', component: ClientsList},
+  { path: '/timetracker/projects/add', name: 'ProjectsAdd', component: ProjectsAdd},
+  { path: '/timetracker/projects/list', name: 'ProjectsList', component: ProjectsList},
+  { path: '/timetracker/jobs/add', name: 'JobsAdd', component: JobsAdd},
+  { path: '/timetracker/jobs/list', name: 'JobsList', component: JobsList},
+  
+
+
+
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/leave', exact: true, name: 'Leave Type', component: LeaveType },

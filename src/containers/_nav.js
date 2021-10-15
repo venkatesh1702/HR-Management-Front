@@ -135,6 +135,39 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavDropdown',
+    name: 'Time Tracker',
+    route: '/timetracker/clients/list',
+    icon: 'cil-puzzle',        
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Clients',
+        to: '/timetracker/clients/list',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Projects',
+        to: '/timetracker/projects/list',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Jobs',
+        to: '/timetracker/jobs/list',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Time Logs',
+        to: '/timetracker/timelogs/list',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Timesheets',
+        to: '/timetracker/timesheets/list',
+      }
+    ]
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
     name: 'Buttons',
     route: '/buttons',
     icon: 'cil-cursor',
