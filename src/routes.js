@@ -109,9 +109,9 @@ const routes = [
 
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/leave', exact: true, name: 'Leave Type', component: LeaveType },
-  { path: '/leavelist', exact: true, name: 'Leave List', component: LeaveList },
-  { path: '/leaveapply', exact: true, name: 'Leave Apply', component: LeaveApply }
+  { path: '/organization/leavetype', exact: true, name: 'Leave Type', component: LeaveType },
+  { path: '/organization/leavelist', exact: true, name: 'Leave List', component: LeaveList },
+  { path: '/organization/leaveapply', exact: true, name: 'Leave Apply', component: LeaveApply }
 ];
 
 export default routes;

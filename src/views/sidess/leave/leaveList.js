@@ -23,7 +23,7 @@ const LeaveList = () => {
     const history = useHistory();
 
     const applyLeave = () =>{
-        history.push('/leaveapply');
+        history.push('/organization/leaveapply');
     }
 
     return (

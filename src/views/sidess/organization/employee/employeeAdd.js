@@ -14,6 +14,7 @@ import {users,departments,locations,designations,sourceOfHires,employmentTypes} 
 let obj = {};
 var queryUserId = "";
 var usersListApi;
+
 const EmployeeAdd = (props) => {
 
 
@@ -425,6 +426,7 @@ const EmployeeAdd = (props) => {
             setErrors(error)
         }
     }
+    
     const add_field_modal = (e,name) => {
         setFieldName(name);
         setModalOpenClose(!modalOpenClose)

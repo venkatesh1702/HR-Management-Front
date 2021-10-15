@@ -103,6 +103,7 @@ const LeaveType = () => {
             });
     }
 
+
     useEffect(() => {
         axios.get('http://localhost:4000/api/leavetype/list')
             .then(res => {
@@ -212,8 +213,8 @@ const LeaveType = () => {
                                                 <td>{item.leave_count}</td>
                                                 <td>{item.leave_time}</td>
                                                 <td><CSwitch className={'mx-1'} shape={'pill'} color={'success'} size='sm' onClick={() => LeaveStatus(index)} defaultChecked={item.leave_status} /></td>
-                                                <td onClick={() => editLeaveType(item._id)}><i style={{cursor:'pointer'}} className="fa fa-edit"></i></td>
-                                                <td onClick={() => deleteModal(item._id)}><i  style={{cursor:'pointer'}} className="fa fa-trash"></i></td>
+                                                <td onClick={() => editLeaveType(item._id)}><i style={{ cursor: 'pointer' }} className="fa fa-edit"></i></td>
+                                                <td onClick={() => deleteModal(item._id)}><i style={{ cursor: 'pointer' }} className="fa fa-trash"></i></td>
                                             </tr>
                                         ))
                                     }
