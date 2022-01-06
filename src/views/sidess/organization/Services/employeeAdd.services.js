@@ -1,11 +1,11 @@
 import { React } from "react";
 import Axios from "axios";
 import "../employee/employeeAdd.js"
-
+import DomainPortNumber from "../../domainPortNumber";
 
 export async function users() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/user/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/user/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -14,7 +14,7 @@ export async function users() {
 
 export async function departments() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/department/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/department/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -23,7 +23,7 @@ export async function departments() {
 
 export async function locations() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/location/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/location/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -32,7 +32,7 @@ export async function locations() {
 
 export async function designations() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/designation/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/designation/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -41,7 +41,7 @@ export async function designations() {
 
 export async function employmentTypes() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/employmentType/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/employmentType/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -50,7 +50,7 @@ export async function employmentTypes() {
 
 export async function sourceOfHires() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/sourceofhire/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/sourceofhire/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -59,7 +59,7 @@ export async function sourceOfHires() {
 
 export async function usersLlist() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/user/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/user/list')
         return res.data.data;
     } catch (error) {
         console.log(error.message);
@@ -68,7 +68,7 @@ export async function usersLlist() {
 
 export async function clients() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/client/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/client/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -77,7 +77,7 @@ export async function clients() {
 
 export async function projects() {
     try {
-        const res = await Axios.get('http://localhost:4000/api/project/list')
+        const res = await Axios.get(DomainPortNumber.server + '/api/project/list')
         return res;
     } catch (error) {
         console.log(error.message)
@@ -86,7 +86,7 @@ export async function projects() {
 
 export async function deleteUser(selectedUserId) {
     try {
-        const res = await Axios.delete('http://localhost:4000/api/user/delete?userId=' + selectedUserId)
+        const res = await Axios.delete(DomainPortNumber.server + '/api/user/delete?userId=' + selectedUserId)
         return res;
     } catch (error) {
         console.log(error.message);

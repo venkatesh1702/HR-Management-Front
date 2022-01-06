@@ -1,22 +1,18 @@
 import React, { useEffect,useState} from 'react';
 import Axios from "axios";
 import jwt from "jsonwebtoken";
-import { CRow, CCol, CCard, CCardBody, CForm, CFormGroup, CLabel, CInput,
-     CButton, CToast, CToaster, CToastHeader, CToastBody ,
-    CModal,CModalHeader,CModalBody,CModalTitle,CModalFooter,CInputRadio, CTextarea} from '@coreui/react';
+import { CRow, CCol, CCard, CCardBody, CForm, CFormGroup, CLabel, CInput,CButton, CToast, CToaster, 
+    CToastHeader,CModal,CModalHeader,CModalBody,CModalTitle,CModalFooter,CInputRadio, CTextarea} from '@coreui/react';
 import "../../../../views/styles.css";
-// import emailjs from 'emailjs-com';
 import emailjs from 'emailjs-com';
 import Select from "react-select";
 import {users,departments,locations,designations,sourceOfHires,employmentTypes} from  "../Services/employeeAdd.services.js";
+import DomainPortNumber from "../../domainPortNumber";
 
 
-let obj = {};
+
 var queryUserId = "";
-var usersListApi;
-
 const EmployeeAdd = (props) => {
-
 
     useEffect(() => {
         const query = props.location.search;
@@ -90,7 +86,7 @@ const EmployeeAdd = (props) => {
 
     const editUser = (queryUserId) => {
         if(queryUserId) {
-            Axios.get('http://localhost:4000/api/user/edit?userId=' + `${queryUserId}`)
+            Axios.get(DomainPortNumber.server + '/api/user/edit?userId=' + `${queryUserId}`)
             .then((res) => {
                 setEmpData({
                     "employeeID": res.data.data.employeeID,
@@ -282,7 +278,7 @@ const EmployeeAdd = (props) => {
         }
         validations(event);
         if(queryUserId == undefined) {
-            Axios.post('http://localhost:4000/api/user/add', employeeDetails)
+            Axios.post(DomainPortNumber.server + '/api/user/add', employeeDetails)
                 .then(res => {
                     if (res.data) {
                         setResMsg(res.data.msg);
@@ -305,7 +301,7 @@ const EmployeeAdd = (props) => {
                     }
                 })
         } else {
-            Axios.put('http://localhost:4000/api/user/update?userId=' + `${queryUserId}`, employeeDetails)
+            Axios.put(DomainPortNumber.server + '/api/user/update?userId=' + `${queryUserId}`, employeeDetails)
             .then(res => {
                 if (res.data) {
                     setResMsg(res.data.msg);
@@ -437,7 +433,7 @@ const EmployeeAdd = (props) => {
         fieldName = fieldName.replace(/ /g,'')
         var fields = {};
         fields["fieldValue"] = value.fields
-        Axios.post('http://localhost:4000/api/'+ fieldName +'/add', fields)
+        Axios.post(DomainPortNumber.server + '/api/'+ fieldName +'/add', fields)
         .then(res => {
             setModalOpenClose(!modalOpenClose)
             setResMsg(res.data.msg);
@@ -1280,7 +1276,7 @@ const EmployeeAdd = (props) => {
                                         <CButton block color="success" type="submit">Save</CButton>
                                     </CCol>
                                     <CCol sm="3" md="3">
-                                        <CButton block color="danger">Cancel</CButton>
+                                        <a className="cancelBtn" href="/#/organization/employee/list"><CButton block color="danger">Cancel</CButton></a>
                                     </CCol>
                                 </CFormGroup>
                             </CForm>

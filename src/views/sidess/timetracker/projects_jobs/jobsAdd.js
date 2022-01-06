@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { CButton, CCol, CForm, CRow, CFormGroup, CLabel, CInput, CCard, CCardBody, CTextarea,CToast, CToaster, CToastHeader  } from "@coreui/react";
+import { CButton, CCol, CForm, CRow, CFormGroup, CLabel, CInput, CCard, CCardBody,CToast, CToaster, CToastHeader,
+    CModal, CModalHeader,CModalTitle,CModalBody,CModalFooter   } from "@coreui/react";
 import "../../../../views/styles.css";
 import Select from "react-select";
 import Axios from "axios";
 import {projects,users} from "../../organization/Services/employeeAdd.services";
+import DomainPortNumber from "../../domainPortNumber";
 
 
 var queryJobId = "";
@@ -60,6 +62,11 @@ const JobsAdd = (props) => {
         "autohide": "5000"
     })
 
+    const [modalOpenClose, setModalOpenClose] = useState(false);
+    const [projectDetails,setProjectDetails] = useState({
+        "projectName": ""
+    })
+
     const [resMsg,setResMsg] = useState("");
 
     const [jobData,setJobData] = useState({
@@ -77,6 +84,10 @@ const JobsAdd = (props) => {
         setJobData({ ...jobData, [e.target.name]: e.target.value });
     }
 
+    const projectDetailsChange = (e) => {
+        setProjectDetails({...projectDetails, [e.target.name]:e.target.value});
+    }
+
     const selectChange = (e, name) => {
         setJobData({ ...jobData, [name]: e.value });
     }
@@ -85,9 +96,48 @@ const JobsAdd = (props) => {
         setSelectedAssigneesValue(Array.isArray(e) ? e.map(x => x.value) : []);  
     }
 
+    const saveProject = (e) => {
+        projectValidation(e);
+        const projectData = {
+            "projectName": projectDetails.projectName
+        }
+
+        Axios.post(DomainPortNumber.server +  '/api/project/add',projectData)
+        .then((res) => {
+            if(res.data) {
+                projects().then(res => {
+                    var datas = [];
+                    {res.data.map(data => {
+                        datas.push({
+                            "label": data.projectName,
+                            "value": data.projectName
+                        })
+                    })}
+                    setProjectsList(datas);
+                })
+                setModalOpenClose(false);
+                setProjectDetails({...projectDetails, "projectName": ""})
+            }
+        })
+    }
+
+    const projectValidation = (event) => {
+        let projectName = projectDetails.projectName
+        
+        var error = {};
+        if (projectName === "") {
+            error.projectNameError = "Project Name is required."
+            setErrors(error)
+            event.preventDefault();
+        } else {
+            error.projectNameError = ""
+            setErrors(error)
+        }
+    }
+
     const editJob = (queryJobId) => {
         if(queryJobId) {
-            Axios.get('http://localhost:4000/api/job/edit?jobId=' + `${queryJobId}`)
+            Axios.get(DomainPortNumber.server + '/api/job/edit?jobId=' + `${queryJobId}`)
             .then((res) => {
                 setJobData({
                     jobName: res.data.jobName,
@@ -121,17 +171,16 @@ const JobsAdd = (props) => {
 
         validations(event)
         if(queryJobId == undefined) {
-            Axios.post('http://localhost:4000/api/job/add', jobDetails)
+            Axios.post(DomainPortNumber.server + '/api/job/add', jobDetails)
             .then(res => {
                 if (res.data) {
-                    console.log(res);
                     setResMsg(res.data.msg);
                     setToaster({ show: true, fade: true, autohide: "5000" })
                 }
                 clearForm()
             })
         } else {
-            Axios.put('http://localhost:4000/api/job/update?jobId=' + `${queryJobId}`, jobDetails)
+            Axios.put(DomainPortNumber.server + '/api/job/update?jobId=' + `${queryJobId}`, jobDetails)
             .then(res => {
                 if (res.data) {
                     setResMsg(res.data.msg);
@@ -175,7 +224,6 @@ const JobsAdd = (props) => {
         const values = [...workItem];
         values.push({"value": ""})
         setWorkItem(values);
-        console.log(workItem);
     }
 
     const removeWorkItem = (i,e) => {
@@ -192,10 +240,54 @@ const JobsAdd = (props) => {
         setWorkItem(values);
     }
 
+    const add_field_modal = (e) => {
+        setModalOpenClose(!modalOpenClose)
+    }
+
+    const cancelModal = (e) => {
+        setModalOpenClose(!modalOpenClose)
+        setProjectDetails({...projectDetails, "projectName": ""});
+    }
+
 
 
     return (
         <>
+            <CModal 
+                show={modalOpenClose} 
+                onClose={() => setModalOpenClose(!modalOpenClose)}
+                color="info"
+                >
+                <CModalHeader closeButton>
+                    <CModalTitle>Add Project</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    <CFormGroup row>
+                        <CCol md="12">
+                            <div className="input_label_div_req">    
+                                <CRow>
+                                    <CCol md="4">
+                                        <CLabel className="input_label">Project Name</CLabel>
+                                    </CCol>
+                                    <CCol xs="12" md="8">
+                                        <CInput className="input_text" id="projectName" name="projectName" value={projectDetails.projectName} onChange={(e) => { projectDetailsChange(e) }} />
+                                    </CCol>
+                                </CRow>
+                            </div>
+                        </CCol>
+                    </CFormGroup>
+                    <CRow>
+                        <CCol md="8 offset-4">
+                            {errors.projectNameError ?
+                                (<span className="errorMsg">{errors.projectNameError}</span>) : null}
+                        </CCol>
+                    </CRow>
+                </CModalBody>
+                <CModalFooter className="add_modal">
+                    <CButton color="secondary" onClick={(e) => {cancelModal(e)}}>Cancel</CButton>
+                    <CButton color="info" onClick={(e) => {saveProject(e)}}>Add</CButton>{' '}
+                </CModalFooter>
+            </CModal>
             <CRow>
                 <CCol md={10}>
 
@@ -244,8 +336,11 @@ const JobsAdd = (props) => {
                                                     <CCol md="3">
                                                         <CLabel className="input_label">Project</CLabel>
                                                     </CCol>
-                                                    <CCol xs="12" md="9">
+                                                    <CCol xs="12" md="8">
                                                         <Select className="input_text" options={projectsList} name="project" id="project" onChange={(e) => { selectChange(e, "project") }} value={projectsList.filter(function (option) { return option.value === jobData.project; })} />
+                                                    </CCol>
+                                                    <CCol xs="12" md="1" className="pl-1">
+                                                        <a onClick={(e) => {add_field_modal(e)}}><i className="fas fa-plus"></i></a>
                                                     </CCol>
                                                 </CRow>
                                             </div>

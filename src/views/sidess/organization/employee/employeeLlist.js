@@ -1,12 +1,8 @@
 import { React, useEffect, useState } from "react";
-import { CRow, CCol, CButton,CDropdown,
-    CDropdownItem,
-    CDropdownMenu,
-    CDropdownToggle,
+import { CRow, CCol, CButton,CDropdown,CDropdownItem,CDropdownMenu,CDropdownToggle,
     CModal,CToast, CToaster, CToastHeader,CModalBody,CModalFooter,CLabel } from '@coreui/react';
 import {Table} from "reactstrap";
 import {usersLlist, deleteUser} from "../Services/employeeAdd.services.js";
-
 
 
 var selectedUserId;
@@ -41,7 +37,6 @@ const EmployeeList = () => {
         deleteUser(selectedUserId).then(res => {
             if(res.status == "200") {
                 setResMsg(res.data.msg);
-                console.log(res.data.msg)
                 setToaster({ show: true, fade: true, autohide: "5000" })
                 usersLlist().then(res => {
                     setUsersData(res);
@@ -50,7 +45,6 @@ const EmployeeList = () => {
         })
         setModalOpenClose(!modalOpenClose)
     }
-
 
 
     return (
@@ -66,7 +60,6 @@ const EmployeeList = () => {
             <CToaster position={toaster.position}>
                 <CToast show={toaster.show} autohide={toaster.autohide} fade={toaster.fade}>
                     <CToastHeader closeButton="true">{resMsg}</CToastHeader>
-                    {/* <CToastBody></CToastBody> */}
                 </CToast>
             </CToaster>
             <CModal 

@@ -1,12 +1,10 @@
 import { React, useEffect, useState } from "react";
-import { CRow, CCol, CButton,CDropdown,
-    CDropdownItem,
-    CDropdownMenu,
-    CDropdownToggle,
+import { CRow, CCol, CButton,
     CModal,CToast, CToaster, CToastHeader,CModalBody,CModalFooter,CLabel } from '@coreui/react';
 import {Table} from "reactstrap";
 import Axios from "axios";
 import "../../../../views/styles.css";
+import DomainPortNumber from "../../domainPortNumber";
 
 
 var selectedJobId
@@ -39,7 +37,7 @@ const JobsList = () => {
     async function jobList() {
         let response;
         try {
-            response = await Axios.get("http://localhost:4000/api/job/list")
+            response = await Axios.get(DomainPortNumber.server + "/api/job/list")
             setJobs(response.data)
         } catch (error) {
             console.log(error.message)
@@ -49,7 +47,7 @@ const JobsList = () => {
     async function deleteJob() {
         let response;
         try {
-            response = await Axios.delete("http://localhost:4000/api/job/delete?jobId=" + `${selectedJobId}`)
+            response = await Axios.delete(DomainPortNumber.server + "/api/job/delete?jobId=" + `${selectedJobId}`)
             setResMsg(response.data.msg);
             setToaster({ show: true, fade: true, autohide: "5000" })
             jobList();
@@ -98,33 +96,24 @@ const JobsList = () => {
                     <Table striped responsive className="userListTable">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Job Name</th>
                                 <th>Project</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             {jobs.length && jobs.map((job) => {
                                 return(
                                 <tr key={job._id}>
-                                    <td>
-                                    <CDropdown className="m-1">
-                                        <CDropdownToggle>
-                                            <a><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
-                                        </CDropdownToggle>
-                                        <CDropdownMenu>
-                                            <CDropdownItem onClick={(e)=>{editClick(job._id)}}>Edit</CDropdownItem>
-                                            <CDropdownItem onClick={(e)=> {openDeleteModal(job._id)}}>Delete</CDropdownItem>
-                                        </CDropdownMenu>
-                                    </CDropdown>
-                                    </td>
-                                    
                                     <td>{job.jobName}</td>
                                     <td>{job.project}</td>
                                     <td>{job.startDate}</td>
                                     <td>{job.endDate}</td>
+                                    <td onClick={(e)=>{editClick(job._id)}}><i className="fa fa-edit"></i></td>
+                                    <td onClick={(e)=> {openDeleteModal(job._id)}}><i className="fa fa-trash"></i></td>
                                 </tr>
                                 )
                             })}

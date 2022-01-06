@@ -3,13 +3,12 @@ import { CButton, CCol, CForm, CRow, CFormGroup, CLabel, CInput, CCard, CCardBod
 import "../../../../views/styles.css";
 import Select from "react-select";
 import Axios from "axios";
-
+import DomainPortNumber from "../../domainPortNumber";
 
 
 var queryClientId = "";
 
 const ClientsAdd = (props) => {
-
 
     useEffect(() => {
         const query = props.location.search;
@@ -71,7 +70,7 @@ const ClientsAdd = (props) => {
 
     const editClient = (queryClientId) => {
         if(queryClientId) {
-            Axios.get('http://localhost:4000/api/client/edit?clientId=' + `${queryClientId}`)
+            Axios.get(DomainPortNumber.server + '/api/client/edit?clientId=' + `${queryClientId}`)
             .then((res) => {
                 setClientData({
                     clientName: res.data.clientName,
@@ -119,25 +118,22 @@ const ClientsAdd = (props) => {
 
         validations(event)
         if(queryClientId == undefined) {
-            Axios.post('http://localhost:4000/api/client/add', clientsDetails)
+            Axios.post(DomainPortNumber.server + '/api/client/add', clientsDetails)
             .then(res => {
                 if (res.data) {
-                    console.log(res);
                     setResMsg(res.data.msg);
                     setToaster({ show: true, fade: true, autohide: "5000" })
                 }
                 clearForm()
-                // window.location.href = "/#/timetracker/clients/list";
             })
         } else {
-            Axios.put('http://localhost:4000/api/client/update?clientId=' + `${queryClientId}`, clientsDetails)
+            Axios.put(DomainPortNumber.server + '/api/client/update?clientId=' + `${queryClientId}`, clientsDetails)
             .then(res => {
                 if (res.data) {
                     setResMsg(res.data.msg);
                     setToaster({ show: true, fade: true, autohide: "5000" })
                 }
                 clearForm()
-                // window.location.href = "/#/timetracker/clients/list";
             })
             
         }
@@ -496,7 +492,7 @@ const ClientsAdd = (props) => {
                                         <CButton block color="success" type="submit">Save</CButton>
                                     </CCol>
                                     <CCol sm="3" md="3">
-                                        <CButton block color="danger">Cancel</CButton>
+                                    <a className="cancelBtn" href="/#/timetracker/clients/list"><CButton block color="danger">Cancel</CButton></a>
                                     </CCol>
                                 </CFormGroup>
                             </CCardBody>

@@ -1,12 +1,9 @@
 import { React, useEffect, useState } from "react";
-import { CRow, CCol, CButton,CDropdown,
-    CDropdownItem,
-    CDropdownMenu,
-    CDropdownToggle,
-    CModal,CToast, CToaster, CToastHeader,CModalBody,CModalFooter,CLabel } from '@coreui/react';
+import { CRow, CCol, CButton,CModal,CToast, CToaster, CToastHeader,CModalBody,CModalFooter,CLabel } from '@coreui/react';
 import {Table} from "reactstrap";
 import Axios from "axios";
 import "../../../../views/styles.css";
+import DomainPortNumber from "../../domainPortNumber";
 
 
 var selectedClientId
@@ -39,7 +36,7 @@ const ClientsList = () => {
     async function ClientList() {
         let response;
         try {
-            response = await Axios.get("http://localhost:4000/api/client/list")
+            response = await Axios.get(DomainPortNumber.server + "/api/client/list")
             setUsersData(response.data)
         } catch (error) {
             console.log(error.message)
@@ -51,7 +48,7 @@ const ClientsList = () => {
     async function deleteClient() {
         let response;
         try {
-            response = await Axios.delete("http://localhost:4000/api/client/delete?clientId=" + `${selectedClientId}`)
+            response = await Axios.delete(DomainPortNumber.server  + "/api/client/delete?clientId=" + `${selectedClientId}`)
             setResMsg(response.data.msg);
             setToaster({ show: true, fade: true, autohide: "5000" })
             ClientList();
@@ -100,33 +97,24 @@ const ClientsList = () => {
                     <Table striped responsive className="userListTable">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Client Name</th>
                                 <th>Currency Type</th>
                                 <th>Billing Method</th>
                                 <th>Email Address</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             {usersData.length && usersData.map((user) => {
                                 return(
-                                <tr key={user._id}>
-                                    <td>
-                                    <CDropdown className="m-1">
-                                        <CDropdownToggle>
-                                            <a><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
-                                        </CDropdownToggle>
-                                        <CDropdownMenu>
-                                            <CDropdownItem onClick={(e)=>{editClick(user._id)}}>Edit</CDropdownItem>
-                                            <CDropdownItem onClick={(e)=> {openDeleteModal(user._id)}}>Delete</CDropdownItem>
-                                        </CDropdownMenu>
-                                    </CDropdown>
-                                    </td>
-                                    
+                                <tr key={user._id}>    
                                     <td>{user.clientName}</td>
                                     <td>{user.currency}</td>
                                     <td>{user.billingMethod}</td>
                                     <td>{user.emailId}</td>
+                                    <td onClick={(e)=>{editClick(user._id)}}><i className="fa fa-edit"></i></td>
+                                    <td onClick={(e)=> {openDeleteModal(user._id)}}><i className="fa fa-trash"></i></td>
                                 </tr>
                                 )
                             })}

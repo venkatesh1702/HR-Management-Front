@@ -1,12 +1,9 @@
 import { React, useEffect, useState } from "react";
-import { CRow, CCol, CButton,CDropdown,
-    CDropdownItem,
-    CDropdownMenu,
-    CDropdownToggle,
-    CModal,CToast, CToaster, CToastHeader,CModalBody,CModalFooter,CLabel } from '@coreui/react';
+import { CRow, CCol, CButton,CModal,CToast, CToaster, CToastHeader,CModalBody,CModalFooter,CLabel } from '@coreui/react';
 import {Table} from "reactstrap";
 import Axios from "axios";
 import "../../../../views/styles.css";
+import DomainPortNumber from "../../domainPortNumber";
 
 
 var selectedProjectId
@@ -32,7 +29,6 @@ const ProjectsList = () => {
     }
 
     const editClick = (projectId) => {
-        console.log(projectId);
         window.location.href = "/#/timetracker/projects/add?projectId=" + `${projectId}`;
     }
 
@@ -40,19 +36,17 @@ const ProjectsList = () => {
     async function ProjectList() {
         let response;
         try {
-            response = await Axios.get("http://localhost:4000/api/project/list")
+            response = await Axios.get(DomainPortNumber.server + "/api/project/list")
             setProjects(response.data)
         } catch (error) {
             console.log(error.message)
         }
-       
-
     }
 
     async function deleteProject() {
         let response;
         try {
-            response = await Axios.delete("http://localhost:4000/api/project/delete?projectId=" + `${selectedProjectId}`)
+            response = await Axios.delete(DomainPortNumber.server + "/api/project/delete?projectId=" + `${selectedProjectId}`)
             setResMsg(response.data.msg);
             setToaster({ show: true, fade: true, autohide: "5000" })
             ProjectList();
@@ -101,31 +95,22 @@ const ProjectsList = () => {
                     <Table striped responsive className="userListTable">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Project Name</th>
                                 <th>Client Name</th>
                                 <th>Project Head</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             {projects.length && projects.map((user) => {
                                 return(
                                 <tr key={user._id}>
-                                    <td>
-                                    <CDropdown className="m-1">
-                                        <CDropdownToggle>
-                                            <a><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
-                                        </CDropdownToggle>
-                                        <CDropdownMenu>
-                                            <CDropdownItem onClick={(e)=>{editClick(user._id)}}>Edit</CDropdownItem>
-                                            <CDropdownItem onClick={(e)=> {openDeleteModal(user._id)}}>Delete</CDropdownItem>
-                                        </CDropdownMenu>
-                                    </CDropdown>
-                                    </td>
-                                    
                                     <td>{user.projectName}</td>
                                     <td>{user.clientName}</td>
                                     <td>{user.projectHead}</td>
+                                    <td onClick={(e)=>{editClick(user._id)}}><i className="fa fa-edit"></i></td>
+                                    <td onClick={(e)=> {openDeleteModal(user._id)}}><i className="fa fa-trash"></i></td>
                                 </tr>
                                 )
                             })}

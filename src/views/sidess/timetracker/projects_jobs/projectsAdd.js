@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { CButton, CCol, CForm, CRow, CFormGroup, CLabel, CInput, CCard, CCardBody, CTextarea,CToast, CToaster, CToastHeader  } from "@coreui/react";
+import { CButton, CCol, CForm, CRow, CFormGroup, CLabel, CInput, CCard, CCardBody,CToast, CToaster, CToastHeader,
+CModal, CModalHeader,CModalTitle,CModalBody,CModalFooter } from "@coreui/react";
 import "../../../../views/styles.css";
 import Select from "react-select";
 import Axios from "axios";
 import {clients,users} from "../../organization/Services/employeeAdd.services";
+import DomainPortNumber from "../../domainPortNumber";
 
 
 var queryProjectId = "";
 
 const ProjectsAdd = (props) => {
-
 
     useEffect(() => {
         const query = props.location.search;
@@ -48,6 +49,18 @@ const ProjectsAdd = (props) => {
     const [clientsList,setClientsList] = useState([]);
     const [projectHeadList,setProjectHeadList] = useState([]);
 
+    const [modalOpenClose, setModalOpenClose] = useState(false);
+    const [clientDetails,setClientDetails] = useState({
+        "clientName": "",
+        "currency": ""
+    })
+
+    const [currencyMethod,setCurrencyMethod] = useState([
+        { "label": "USD", "value": "USD" },
+        { "label": "INR", "value": "INR" },
+        { "label": "EAU", "value": "EAU"}
+    ])
+
     const [errors, setErrors] = useState({})
     const [toaster, setToaster] = useState({
         "position": "top-right",
@@ -70,8 +83,16 @@ const ProjectsAdd = (props) => {
         setProjectData({ ...projectData, [e.target.name]: e.target.value });
     }
 
+    const clientDetailsChange = (e) => {
+        setClientDetails({...clientDetails, "clientName":e.target.value});
+    }
+
     const selectChange = (e, name) => {
         setProjectData({ ...projectData, [name]: e.value });
+    }
+
+    const clientSelectChange = (e,name) => {
+        setClientDetails({ ...clientDetails, [name]: e.value });
     }
 
     const multiSelectChange = (e,name) => {
@@ -83,11 +104,59 @@ const ProjectsAdd = (props) => {
         }  
     }
 
+    const saveClient = (e) => {
+        clientValidation(e);
+        const clientData = {
+            "clientName": clientDetails.clientName,
+            "currency": clientDetails.currency
+        }
+
+        Axios.post(DomainPortNumber.server + '/api/client/add',clientData)
+        .then((res) => {
+            if(res.data) {
+                clients().then(res => {
+                    var datas = [];
+                    {res.data.map(data => {
+                        datas.push({
+                            "label": data.clientName,
+                            "value": data.clientName
+                        })
+                    })}
+                    setClientsList(datas);
+                })
+                setModalOpenClose(false);
+                setClientDetails({...clientDetails, "clientName": "", "currency": ""})
+            }
+        })
+    }
+
+    const clientValidation = (event) => {
+        let clientName = clientDetails.clientName
+        let currency = clientDetails.currency
+        var error = {};
+        if (clientName === "") {
+            error.clientNameError = "Client Name is required."
+            setErrors(error)
+            event.preventDefault();
+        } else {
+            error.clientNameError = ""
+            setErrors(error)
+        }
+
+        if (currency === "") {
+            error.currencyError = "Currency is required."
+            setErrors(error)
+            event.preventDefault();
+        } else {
+            error.currencyError = ""
+            setErrors(error)
+        }
+    }
+ 
     const editProject = (queryProjectId) => {
         if(queryProjectId) {
-            Axios.get('http://localhost:4000/api/project/edit?projectId=' + `${queryProjectId}`)
+            Axios.get(DomainPortNumber.server + '/api/project/edit?projectId=' + `${queryProjectId}`)
             .then((res) => {
-                console.log(res);
                 setProjectData({
                     projectName: res.data.projectName,
                     clientName: res.data.clientName,
@@ -114,17 +183,16 @@ const ProjectsAdd = (props) => {
 
         validations(event)
         if(queryProjectId == undefined) {
-            Axios.post('http://localhost:4000/api/project/add', projectDetails)
+            Axios.post(DomainPortNumber.server + '/api/project/add', projectDetails)
             .then(res => {
                 if (res.data) {
-                    console.log(res);
                     setResMsg(res.data.msg);
                     setToaster({ show: true, fade: true, autohide: "5000" })
                 }
                 clearForm()
             })
         } else {
-            Axios.put('http://localhost:4000/api/project/update?projectId=' + `${queryProjectId}`, projectDetails)
+            Axios.put(DomainPortNumber.server + '/api/project/update?projectId=' + `${queryProjectId}`, projectDetails)
             .then(res => {
                 if (res.data) {
                     setResMsg(res.data.msg);
@@ -161,10 +229,74 @@ const ProjectsAdd = (props) => {
         setSelectedUserValue([])
     }
 
+    const add_field_modal = (e) => {
+        setModalOpenClose(!modalOpenClose)
+    }
+
+    const cancelModal = (e) => {
+        setModalOpenClose(!modalOpenClose)
+        setClientDetails({...clientDetails, "clientName": "", "currency": ""});
+    }
+
 
 
     return (
         <>
+            <CModal 
+                show={modalOpenClose} 
+                onClose={() => setModalOpenClose(!modalOpenClose)}
+                color="info"
+                >
+                <CModalHeader closeButton>
+                    <CModalTitle>Add Client</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    <CFormGroup row>
+                        <CCol md="12">
+                            <div className="input_label_div_req">    
+                                <CRow>
+                                    <CCol md="4">
+                                        <CLabel className="input_label">Client Name</CLabel>
+                                    </CCol>
+                                    <CCol xs="12" md="8">
+                                        <CInput className="input_text" id="clientName" name="clientName" value={clientDetails.clientName} onChange={(e) => { clientDetailsChange(e) }} />
+                                    </CCol>
+                                </CRow>
+                            </div>
+                        </CCol>
+                    </CFormGroup>
+                    <CRow>
+                        <CCol md="8 offset-4">
+                            {errors.clientNameError ?
+                                (<span className="errorMsg">{errors.clientNameError}</span>) : null}
+                        </CCol>
+                    </CRow>
+                    <CFormGroup row>
+                        <CCol md="12">
+                            <div className="input_label_div_req">
+                                <CRow>
+                                    <CCol md="4">
+                                        <CLabel className="input_label">Project Manager</CLabel>
+                                    </CCol>
+                                    <CCol xs="12" md="8">
+                                        <Select className="input_text" options={currencyMethod} name="currency" id="currency" value={currencyMethod.filter(function (option) { return option.value === clientDetails.currency; })} onChange={(e) => {clientSelectChange(e,"currency")}} />
+                                    </CCol>
+                                </CRow>
+                            </div>
+                        </CCol>
+                    </CFormGroup>
+                    <CRow>
+                        <CCol md="8 offset-4">
+                            {errors.currencyError ?
+                                (<span className="errorMsg">{errors.currencyError}</span>) : null}
+                        </CCol>
+                    </CRow>
+                </CModalBody>
+                <CModalFooter className="add_modal">
+                    <CButton color="secondary" onClick={(e) => {cancelModal(e)}}>Cancel</CButton>
+                    <CButton color="info" onClick={(e) => {saveClient(e)}}>Add</CButton>{' '}
+                </CModalFooter>
+            </CModal>
             <CRow>
                 <CCol md={10}>
 
@@ -208,13 +340,16 @@ const ProjectsAdd = (props) => {
 
                                     <CFormGroup row>
                                         <CCol md="8">
-                                            <div className="input_label_div_req">
+                                            <div className="input_label_div">
                                                 <CRow>
                                                     <CCol md="3">
                                                         <CLabel className="input_label">Client Name</CLabel>
                                                     </CCol>
-                                                    <CCol xs="12" md="9">
+                                                    <CCol xs="12" md="8">
                                                         <Select className="input_text" options={clientsList} name="clientName" id="clientName" onChange={(e) => { selectChange(e, "clientName") }} value={clientsList.filter(function (option) { return option.value === projectData.clientName; })} />
+                                                    </CCol>
+                                                    <CCol xs="12" md="1" className="pl-1">
+                                                        <a onClick={(e) => {add_field_modal(e)}}><i className="fas fa-plus"></i></a>
                                                     </CCol>
                                                 </CRow>
                                             </div>
@@ -223,7 +358,7 @@ const ProjectsAdd = (props) => {
 
                                     <CFormGroup row>
                                         <CCol md="8">
-                                            <div className="input_label_div_req">
+                                            <div className="input_label_div">
                                                 <CRow>
                                                     <CCol md="3">
                                                         <CLabel className="input_label">Project Cost</CLabel>
@@ -253,7 +388,7 @@ const ProjectsAdd = (props) => {
                                     
                                     <CFormGroup row>
                                         <CCol md="8">
-                                            <div className="input_label_div_req">
+                                            <div className="input_label_div">
                                                 <CRow>
                                                     <CCol md="3">
                                                         <CLabel className="input_label">Project Manager</CLabel>
@@ -268,7 +403,7 @@ const ProjectsAdd = (props) => {
 
                                     <CFormGroup row>
                                         <CCol md="8">
-                                            <div className="input_label_div_req">
+                                            <div className="input_label_div">
                                                 <CRow>
                                                     <CCol md="3">
                                                         <CLabel className="input_label">Project Users</CLabel>
@@ -283,7 +418,7 @@ const ProjectsAdd = (props) => {
 
                                     <CFormGroup row>
                                         <CCol md="8">
-                                            <div className="input_label_div_req">
+                                            <div className="input_label_div">
                                                 <CRow>
                                                     <CCol md="3">
                                                         <CLabel className="input_label">Description</CLabel>
@@ -306,7 +441,7 @@ const ProjectsAdd = (props) => {
                                         <CButton block color="success" type="submit">Save</CButton>
                                     </CCol>
                                     <CCol sm="3" md="3">
-                                        <CButton block color="danger">Cancel</CButton>
+                                    <a className="cancelBtn" href="/#/timetracker/projects/list"><CButton block color="danger">Cancel</CButton></a>
                                     </CCol>
                                 </CFormGroup>
                             </CCardBody>
@@ -314,8 +449,6 @@ const ProjectsAdd = (props) => {
                     </CCol>
                 </CRow>
             </CForm>
-
-            
         </>
     )
 }
